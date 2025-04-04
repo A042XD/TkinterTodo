@@ -27,13 +27,13 @@ class TasksPage:
         task = Task(self.add_entry_var.get())
         self.tasks_file.content_json.insert(0, task.json())
         # print(self.tasks_file.content_json)
-        tmp = TaskCard(self.tasks_list, task)
+        tmp = TaskCard(self.tasks_list, task, self.tasks_file)
         tmp.add_content()
         tmp.pack_content()
         self.add_entry_var.set("")
     def add_tasks_from_tasks_file(self):
         for i in self.tasks_file.content_json:
-            tmp = TaskCard(self.tasks_list, Task(i["name"]))
+            tmp = TaskCard(self.tasks_list, Task(i["name"]), self.tasks_file)
             tmp.add_content()
             tmp.pack_content()
 class AppInterface:
