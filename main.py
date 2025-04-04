@@ -1,65 +1,8 @@
-import os, json
 import tkinter as tk
 from tkinter import ttk
+from file import *
+from task import *
 
-class File:
-    def __init__(self, path):
-        self.path = path
-        self.content = []
-    def read(self):
-        if os.path.exists(self.path) == False:
-            self.content = [""]
-        else:
-            with open(self.path, 'r') as file:
-                for line in file:
-                    self.content.append(line.strip())
-                file.close()
-    def save(self):
-        with open(self.path, 'w') as file:
-            file.writelines(self.content)
-            file.close()
-class JsonFile(File):
-    def __init__(self, path):
-        super().__init__(path)
-        self.content_single = ""
-        self.content_json = []
-    def restruct(self):
-        self.content_single = ""
-        for i in self.content:
-            self.content_single += i
-    def read(self):
-        File.read(self)
-        if self.content == [""] or self.content == []:
-            self.content_json = []
-        else:
-            self.restruct()
-            try:
-                self.content_json = json.loads(self.content_single)
-            except json.decoder.JSONDecodeError:
-                self.content_json = []
-    def save(self):
-        self.content = [json.dumps(self.content_json)]
-        File.save(self)
-class Task: 
-    def __init__(self, name):
-        self.name = name
-        self.start_date = ""
-        self.completed = False
-    def json(self):
-        obj = {"name": self.name}
-        return obj
-class TaskCard:
-    def __init__(self, root, task):
-        self.task = task
-        self.root = root
-    def add_content(self):
-        self.content = ttk.Frame(self.root)
-        self.label = ttk.Label(self.content, text=self.task.name)
-        self.complete_button = ttk.Button(self.content, text="Complete")
-    def pack_content(self):
-        self.label.pack(expand=False, fill=tk.NONE, side=tk.LEFT)
-        self.complete_button.pack(expand=False, fill=tk.NONE, side=tk.RIGHT)
-        self.content.pack(expand=False, fill=tk.X, ipadx=5, ipady=5, padx=5)
 class TasksPage:
     def __init__(self, root, tasks_file):
         self.root = root
@@ -107,7 +50,8 @@ class AppInterface:
         self.notebook.pack(expand=True, fill=tk.BOTH)
 class App:
     def __init__(self):
-        self.tasks_path = os.getcwd() + "/tasks.json"
+        self.tasks_path = os.getcwd() + "/data/tasks.json"
+        self.habits_path = os.getcwd() + "/data/habits.json"
         self.tasks_file = JsonFile(self.tasks_path)
         self.tasks_file.read()
         
