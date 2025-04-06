@@ -2,6 +2,7 @@ import tkinter as tk
 from tkinter import ttk
 from file import *
 from task import *
+from dates import *
 
 class TasksPage:
     def __init__(self, root, tasks_file):
@@ -33,7 +34,10 @@ class TasksPage:
         self.add_entry_var.set("")
     def add_tasks_from_tasks_file(self):
         for i in self.tasks_file.content_json:
-            tmp = TaskCard(self.tasks_list, Task(i["name"]), self.tasks_file)
+            tmp_task = Task(i["name"])
+            if 'date' in i:
+                tmp_task.set_start_date(to_date(i["date"]))
+            tmp = TaskCard(self.tasks_list, tmp_task, self.tasks_file)
             tmp.add_content()
             tmp.pack_content()
 class AppInterface:
@@ -43,11 +47,13 @@ class AppInterface:
         self.content1 = ttk.Frame(self.root)
         self.content2 = ttk.Frame(self.root)
         self.content3 = ttk.Frame(self.root)
+        self.content4 = ttk.Frame(self.root)
         TasksPage(self.content1, tasks_file)
         self.notebook.add(self.content1, text="Tasks")
         self.notebook.add(self.content2, text="Habits")
-        self.notebook.add(self.content3, text="Statistics")
-        self.notebook.pack(expand=True, fill=tk.BOTH)
+        self.notebook.add(self.content3, text="History")
+        self.notebook.add(self.content4, text="Statistics")
+        self.notebook.pack(expand=True, fill=tk.BOTH, padx=5, pady=5)
 class App:
     def __init__(self):
         self.tasks_path = os.getcwd() + "/data/tasks.json"
