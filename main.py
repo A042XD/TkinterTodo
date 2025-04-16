@@ -50,9 +50,9 @@ class AppInterface:
         self.content4 = ttk.Frame(self.root)
         TasksPage(self.content1, tasks_file)
         self.notebook.add(self.content1, text="Tasks")
-        self.notebook.add(self.content2, text="Habits")
-        self.notebook.add(self.content3, text="History")
-        self.notebook.add(self.content4, text="Statistics")
+        # self.notebook.add(self.content2, text="Habits")
+        # self.notebook.add(self.content3, text="History")
+        # self.notebook.add(self.content4, text="Statistics")
         self.notebook.pack(expand=True, fill=tk.BOTH, padx=5, pady=5)
 class App:
     def __init__(self):
